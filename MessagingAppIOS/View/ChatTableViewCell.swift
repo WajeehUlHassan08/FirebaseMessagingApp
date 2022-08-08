@@ -86,9 +86,6 @@ class ChatTableViewCell: UITableViewCell {
         addSubview(self.timeLabel)
 
 
-        
-
-
         self.messageText.topAnchor.constraint(equalTo: topAnchor, constant: 32).isActive = true
         self.messageText.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -32).isActive = true
         self.messageText.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true

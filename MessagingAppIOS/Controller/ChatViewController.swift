@@ -27,7 +27,7 @@ class ChatViewController: UIViewController {
         textField.borderStyle = .roundedRect
         textField.backgroundColor = UIColor(white: 0, alpha: 0.1)
         textField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        textField.widthAnchor.constraint(equalToConstant: 350).isActive = true
+//        textField.widthAnchor.constraint(equalToConstant: 350).isActive = true
         return textField
     }()
     
@@ -40,6 +40,7 @@ class ChatViewController: UIViewController {
         button.layer.cornerRadius = 3
         button.backgroundColor = UIColor.systemBlue
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 50).isActive = true
         button.tintColor = .white
         button.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
         return button
@@ -58,8 +59,6 @@ class ChatViewController: UIViewController {
         let logoutBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(signoutUser))
         self.navigationItem.rightBarButtonItem  = logoutBarButtonItem
         loadMessages()
-        
-
     }
     
     private func setUpUI() {
@@ -72,7 +71,7 @@ class ChatViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = 3.0
+        stackView.spacing = 5.0
 
         stackView.addArrangedSubview(self.sendMessageTextField)
         stackView.addArrangedSubview(self.sendMessageBtn)
@@ -83,6 +82,9 @@ class ChatViewController: UIViewController {
         stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
         stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         stackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        
+        self.sendMessageTextField.widthAnchor.constraint(equalTo: sendMessageTextField.widthAnchor, multiplier: 1).isActive = true
+        self.sendMessageBtn.widthAnchor.constraint(equalTo: self.sendMessageBtn.widthAnchor, multiplier: 1).isActive = true
     }
     
     func loadMessages() {
@@ -96,8 +98,18 @@ class ChatViewController: UIViewController {
                     let data = doc.data()
                     
                     if let messageSender = data["sender"] as? String, let messageBody = data["body"] as? String, let messageTime = data["sent_at"] as? String {
+            
+                        let convertedStringToDate = NSDate(timeIntervalSince1970: TimeInterval(Double(messageTime)!))
                         
-                        let newMessage = Message(sender: messageSender, body: messageBody, sent_at: messageTime)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "HH:mm"
+
+                        let actualDate = dateFormatter.date(from: dateFormatter.string(from: convertedStringToDate as Date))
+                        dateFormatter.dateFormat = "HH:mm"
+                        
+                        let dateToShow = dateFormatter.string(from: actualDate!)
+
+                        let newMessage = Message(sender: messageSender, body: messageBody, sent_at: dateToShow)
                         self.messages.append(newMessage)
 
                         DispatchQueue.main.async {
