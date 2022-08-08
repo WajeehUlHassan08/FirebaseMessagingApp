@@ -20,15 +20,23 @@ class ChatViewController: UIViewController {
         return table
     }()
     
-    let sendMessageTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = "Type Message Here..."
-        textField.borderStyle = .roundedRect
-        textField.backgroundColor = UIColor(white: 0, alpha: 0.1)
-        textField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        textField.widthAnchor.constraint(equalToConstant: 350).isActive = true
-        return textField
+//    let sendMessageTextField: UITextField = {
+//        let textField = UITextField()
+//        textField.translatesAutoresizingMaskIntoConstraints = false
+//        textField.placeholder = "Type Message Here..."
+//        textField.borderStyle = .roundedRect
+//        textField.backgroundColor = UIColor(white: 0, alpha: 0.1)
+//        textField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        return textField
+//    }()
+    
+    let sendMessageTextField: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+        textView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        textView.font = .systemFont(ofSize: 16)
+        return textView
     }()
     
     let sendMessageBtn: UIButton = {
@@ -54,6 +62,7 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.navigationItem.hidesBackButton = true
+        self.navigationItem.title = "ChatApp"
         
         setUpUI()
         let logoutBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(signoutUser))
@@ -99,16 +108,16 @@ class ChatViewController: UIViewController {
                     
                     if let messageSender = data["sender"] as? String, let messageBody = data["body"] as? String, let messageTime = data["sent_at"] as? String {
             
-                        let convertedStringToDate = NSDate(timeIntervalSince1970: TimeInterval(Double(messageTime)!))
+                        let myDate = NSDate(timeIntervalSince1970: TimeInterval(Double(messageTime)!))
                         
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "HH:mm"
 
-                        let actualDate = dateFormatter.date(from: dateFormatter.string(from: convertedStringToDate as Date))
+                        let actualDate = dateFormatter.date(from: dateFormatter.string(from: myDate as Date))
                         dateFormatter.dateFormat = "HH:mm"
                         
                         let dateToShow = dateFormatter.string(from: actualDate!)
-
+                    
                         let newMessage = Message(sender: messageSender, body: messageBody, sent_at: dateToShow)
                         self.messages.append(newMessage)
 

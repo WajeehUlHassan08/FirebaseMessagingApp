@@ -14,7 +14,7 @@ class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.placeholder = "Email"
-        textField.text = "kesh@gmail.com"
+        textField.text = "wajeeh@gmail.com"
         textField.borderStyle = .roundedRect
         textField.backgroundColor = UIColor(white: 0, alpha: 0.1)
         textField.widthAnchor.constraint(equalToConstant: 150).isActive = true
